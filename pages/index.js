@@ -2,8 +2,19 @@ import Head from "next/head";
 import Link from "next/link";
 import Layout, { siteTitle } from "../components/layout";
 import packageJson from "next/package.json";
+import getConfig from 'next/config';
 
-export default function Home({}) {
+const { publicRuntimeConfig } = getConfig();
+
+export async function getServerSideProps() {
+  return {
+    props: {
+      deploymentId:  publicRuntimeConfig.AWS_AMPLIFY_DEPLOYMENT_ID || null,
+    },
+  };
+}
+
+export default function Home({deploymentId}) {
   return (
     <Layout home>
       <Head>
@@ -14,7 +25,7 @@ export default function Home({}) {
         <h1>
           Next.js Feature Test App
         </h1>
-        <p>This app contains a handful of pages. Each page implements a specific Next.js feature. Deploy this app. Then select a test below to check if the feature works.</p>
+        <p>This app contains a handful of pages. Each page implements a specific Next.js feature. Deploy this app. Then select a test below to check if the feature works. Currently serving deployment </p>
         <hr />
       </header>
       <section>
